@@ -26,7 +26,7 @@ const bedrockClient = new BedrockRuntimeClient({
 
 async function invokeTitan(text: string): Promise<string> {
   const prompt = `
-    Your task is to summarize the following legal document. 
+    Human: Your task is to summarize the following legal document. 
     Please provide a clear, structured summary that includes:
     1. Document type
     2. Key parties involved
@@ -41,17 +41,28 @@ async function invokeTitan(text: string): Promise<string> {
   `;
 
   const payload = {
-    inputText: prompt,
-    textGenerationConfig: {
-      maxTokenCount: 4096,
-      stopSequences: [],
-      temperature: 0.7,
-      topP: 1
-    }
+    anthropic_version: "bedrock-2023-05-31",
+    anthropic_beta: ["computer-use-2024-10-22"],
+    max_tokens: 4096,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: text
+          }
+        ]
+      }
+    ],
+    temperature: 0.7,
+    top_p: 1,
+    top_k: 0,
+    stop_sequences: []
   };
 
   const command = new InvokeModelCommand({
-    modelId: "amazon.titan-text-express-v1",
+    modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
     contentType: "application/json",
     accept: "application/json",
     body: JSON.stringify(payload)
@@ -60,8 +71,9 @@ async function invokeTitan(text: string): Promise<string> {
   const response = await bedrockClient.send(command);
   const responseBody = new TextDecoder().decode(response.body);
   const parsedResponse = JSON.parse(responseBody);
+  const summary = parsedResponse.content.map((item: any) => item.text).join('');
 
-  return parsedResponse.results[0].outputText;
+  return summary;
 }
 
 export async function testAWSCredentials() {
