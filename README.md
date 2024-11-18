@@ -1,13 +1,32 @@
-## Running React on Replit
+# PDF Analysis App
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+This application uses AWS services to analyze and summarize PDF documents.
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+## Features
+- Text summarization using AWS Bedrock (Titan)
 
-Using the two in conjunction is one of the fastest ways to build a web app.
+## Setup
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
+```
+3. Set up environment variables in `.env`:
+```
+VITE_AWS_REGION=your_region
+VITE_AWS_ACCESS_KEY_ID=your_access_key
+VITE_AWS_SECRET_ACCESS_KEY=your_secret_key
+```
+4. Run the development server:
+```bash
+npm run dev
+```
 
-### Getting Started
-- Hit run
-- Edit [App.tsx](#src/App.tsx) and watch it live update!
+## Environment Variables
+The following environment variables are required:
+- `VITE_AWS_REGION`: Your AWS region
+- `VITE_AWS_ACCESS_KEY_ID`: AWS access key ID
+- `VITE_AWS_SECRET_ACCESS_KEY`: AWS secret access key
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
+## AWS Services Used
+- AWS Bedrock (Titan model) for text summarization
